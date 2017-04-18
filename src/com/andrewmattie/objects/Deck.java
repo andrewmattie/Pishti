@@ -18,7 +18,7 @@ public class Deck {
     public void shuffle() {
         arrayList.clear();
 
-        for (int i = 1; i <= 54; i++) {
+        for (int i = 1; i <= 52; i++) {
             arrayList.add(i);
         }
 
