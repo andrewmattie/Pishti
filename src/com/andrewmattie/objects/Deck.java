@@ -36,6 +36,7 @@ public class Deck {
     public int dealCard() {
         int card = arrayList.get(0);
         arrayList.remove(0);
+        arrayList.trimToSize();
         return card;
     }
 

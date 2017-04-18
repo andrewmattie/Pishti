@@ -1,5 +1,8 @@
 package com.andrewmattie.objects;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 /**
  * Created by andrewmattie on 4/17/17.
  */
@@ -62,5 +65,9 @@ public class Card {
             default:
                 return null;
         }
+    }
+
+    public ImageView getFaceImage(int card) {
+        return new ImageView("assets/images/card/" + card + ".png");
     }
 }

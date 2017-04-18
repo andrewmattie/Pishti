@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Player {
 
     private ArrayList<Integer> playerCardsList;
+    private int score;
 
     public Player(ArrayList<Integer> playerCardsList) {
         this.playerCardsList = playerCardsList;
@@ -19,5 +20,17 @@ public class Player {
 
     public void setPlayerCardsList(ArrayList<Integer> playerCardsList) {
         this.playerCardsList = playerCardsList;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
+    }
+
+    public void subtractScore(int score) {
+        this.score -= score;
     }
 }
