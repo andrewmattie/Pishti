@@ -10,8 +10,8 @@ public class Deck {
 
     private ArrayList<Integer> arrayList;
 
-    public Deck(ArrayList<Integer> arrayList) {
-        this.arrayList = arrayList;
+    public Deck() {
+        arrayList = new ArrayList<>();
         shuffle();
     }
 
