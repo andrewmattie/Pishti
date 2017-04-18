@@ -47,20 +47,45 @@ public class Deck {
         return masterCardArrayList;
     }
 
-    public boolean checkForWin() {
-        boolean win = false;
+    public Player checkForWin() {
+        Player player = null;
         Card topCard = pileArrayList.get(pileArrayList.size());
         Card bottomCard = pileArrayList.get(pileArrayList.size() - 1);
 
         //todo run logic for pile win check
         // is win?
         if (topCard.checkFace() == bottomCard.checkFace()) {
-            //todo add up points before clear
+            int points = 0;
+            for (Card card : pileArrayList) {
+                switch (card.checkFace()) {
+                    case KING:
+                    case QUEEN:
+                    case JACK:
+                        points++;
+                        break;
+                    case TEN:
+                        if (card.checkSuit() == Card.SUITS.HEARTS) {
+                            points += 3;
+                        } else {
+                            points++;
+                        }
+                        break;
+                    case TWO:
+                        if (card.checkSuit() == Card.SUITS.SPADES) {
+                            points += 2;
+                        }
+                        break;
+                    default:
+                        points += 3;
+                }
+            }
+
             pileArrayList.clear();
-            win = true;
+            player = topCard.getPlayer();
+            player.addScore(points);
         }
 
-        return win;
+        return player;
     }
 
     public void addCardToPile(Card card) {

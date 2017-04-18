@@ -7,18 +7,18 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    private ArrayList<Integer> playerCardsList;
+    private ArrayList<Card> playerCardsList;
     private int score;
 
-    public Player(ArrayList<Integer> playerCardsList) {
+    public Player(ArrayList<Card> playerCardsList) {
         this.playerCardsList = playerCardsList;
     }
 
-    public ArrayList<Integer> getPlayerCardsList() {
+    public ArrayList<Card> getPlayerCardsList() {
         return playerCardsList;
     }
 
-    public void setPlayerCardsList(ArrayList<Integer> playerCardsList) {
+    public void setPlayerCardsList(ArrayList<Card> playerCardsList) {
         this.playerCardsList = playerCardsList;
     }
 

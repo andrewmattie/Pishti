@@ -29,12 +29,12 @@ public class Card {
         KING
     }
 
-    public SUITS checkSuit(int card) {
-        if (card >= 1 && card <= 13) {
+    public SUITS checkSuit() {
+        if (id >= 1 && id <= 13) {
             return SUITS.SPADES;
-        } else if (card >= 14 && card <= 26) {
+        } else if (id >= 14 && id <= 26) {
             return SUITS.HEARTS;
-        } else if (card >= 27 && card <= 39) {
+        } else if (id >= 27 && id <= 39) {
             return SUITS.DIAMONDS;
         } else {
             return SUITS.CLUBS;
