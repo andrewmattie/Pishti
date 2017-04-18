@@ -55,6 +55,13 @@ public class Deck {
         //todo run logic for pile win check
         // is win?
         if (topCard.checkFace() == bottomCard.checkFace()) {
+            if (pileArrayList.size() == 1 && topCard.checkFace() != Card.Faces.JACK) {
+                pileArrayList.clear();
+                player = topCard.getPlayer();
+                player.addScore(10);
+                return player;
+            }
+
             if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() == Card.Faces.JACK) {
                 pileArrayList.clear();
                 player = topCard.getPlayer();
