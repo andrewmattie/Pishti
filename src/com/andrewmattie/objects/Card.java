@@ -73,8 +73,8 @@ public class Card {
         }
     }
 
-    public ImageView getFaceImage(int card) {
-        return new ImageView("assets/images/card/" + card + ".png");
+    public ImageView getFaceImage() {
+        return new ImageView("assets/images/card/" + id + ".png");
     }
 
     public Player getPlayer() {
