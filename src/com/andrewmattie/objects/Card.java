@@ -1,12 +1,18 @@
 package com.andrewmattie.objects;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
  * Created by andrewmattie on 4/17/17.
  */
 public class Card {
+    private Player player;
+    private int id;
+
+    public Card(Player player, int id) {
+        this.player = player;
+        this.id = id;
+    }
 
     enum SUITS {
         DIAMONDS,
@@ -35,8 +41,8 @@ public class Card {
         }
     }
 
-    public FACES checkFace(int card) {
-        switch (card) {
+    public FACES checkFace() {
+        switch (id) {
             case 11:
             case 24:
             case 50:
@@ -69,5 +75,21 @@ public class Card {
 
     public ImageView getFaceImage(int card) {
         return new ImageView("assets/images/card/" + card + ".png");
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int card) {
+        this.id = card;
     }
 }
