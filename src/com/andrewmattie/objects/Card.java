@@ -14,14 +14,14 @@ public class Card {
         this.id = id;
     }
 
-    enum SUITS {
+    enum Suits {
         DIAMONDS,
         SPADES,
         CLUBS,
         HEARTS
     }
 
-    enum FACES {
+    enum Faces {
         JACK,
         TWO,
         TEN,
@@ -29,45 +29,45 @@ public class Card {
         KING
     }
 
-    public SUITS checkSuit() {
+    public Suits checkSuit() {
         if (id >= 1 && id <= 13) {
-            return SUITS.SPADES;
+            return Suits.SPADES;
         } else if (id >= 14 && id <= 26) {
-            return SUITS.HEARTS;
+            return Suits.HEARTS;
         } else if (id >= 27 && id <= 39) {
-            return SUITS.DIAMONDS;
+            return Suits.DIAMONDS;
         } else {
-            return SUITS.CLUBS;
+            return Suits.CLUBS;
         }
     }
 
-    public FACES checkFace() {
+    public Faces checkFace() {
         switch (id) {
             case 11:
             case 24:
             case 50:
             case 37:
-                return FACES.JACK;
+                return Faces.JACK;
             case 2:
             case 15:
             case 28:
             case 41:
-                return FACES.TWO;
+                return Faces.TWO;
             case 10:
             case 23:
             case 49:
             case 36:
-                return FACES.TEN;
+                return Faces.TEN;
             case 12:
             case 38:
             case 51:
             case 25:
-                return FACES.QUEEN;
+                return Faces.QUEEN;
             case 13:
             case 26:
             case 39:
             case 52:
-                return FACES.KING;
+                return Faces.KING;
             default:
                 return null;
         }
