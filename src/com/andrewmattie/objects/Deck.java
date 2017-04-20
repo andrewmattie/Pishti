@@ -49,8 +49,8 @@ public class Deck {
 
     public Player checkForWin() {
         Player player = null;
-        Card topCard = pileArrayList.get(pileArrayList.size());
-        Card bottomCard = pileArrayList.get(pileArrayList.size() - 1);
+        Card topCard = pileArrayList.get(pileArrayList.size() - 1);
+        Card bottomCard = pileArrayList.get(pileArrayList.size() - 2);
 
         //todo run logic for pile win check
         // is win?

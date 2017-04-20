@@ -26,7 +26,8 @@ public class Card {
         TWO,
         TEN,
         QUEEN,
-        KING
+        KING,
+        OTHER
     }
 
     public Suits checkSuit() {
@@ -69,7 +70,7 @@ public class Card {
             case 52:
                 return Faces.KING;
             default:
-                return null;
+                return Faces.OTHER;
         }
     }
 
