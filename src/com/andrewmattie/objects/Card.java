@@ -27,6 +27,7 @@ public class Card {
         TEN,
         QUEEN,
         KING,
+        ACE,
         OTHER
     }
 
@@ -69,6 +70,11 @@ public class Card {
             case 39:
             case 52:
                 return Faces.KING;
+            case 1:
+            case 14:
+            case 27:
+            case 40:
+                return Faces.ACE;
             default:
                 return Faces.OTHER;
         }

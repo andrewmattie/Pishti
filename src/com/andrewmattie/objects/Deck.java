@@ -55,18 +55,16 @@ public class Deck {
         //todo run logic for pile win check
         // is win?
         if (topCard.checkFace() == bottomCard.checkFace()) {
-            if (pileArrayList.size() == 1 && topCard.checkFace() != Card.Faces.JACK) {
+            if (pileArrayList.size() == 2 && topCard.checkFace() != Card.Faces.JACK) {
                 pileArrayList.clear();
                 player = topCard.getPlayer();
                 player.addScore(10);
-                return player;
             }
 
             if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() == Card.Faces.JACK) {
                 pileArrayList.clear();
                 player = topCard.getPlayer();
                 player.addScore(20);
-                return player;
             }
 
             int points = 0;
@@ -75,9 +73,12 @@ public class Deck {
                     case KING:
                     case QUEEN:
                     case JACK:
+                    case ACE:
+                        System.out.println("KQJA pointed");
                         points++;
                         break;
                     case TEN:
+                        System.out.println("TEN pointed");
                         if (card.checkSuit() == Card.Suits.HEARTS) {
                             points += 3;
                         } else {
@@ -85,11 +86,13 @@ public class Deck {
                         }
                         break;
                     case TWO:
+                        System.out.println("TWO pointed");
                         if (card.checkSuit() == Card.Suits.SPADES) {
                             points += 2;
                         }
                         break;
                     default:
+                        System.out.println("DEFAULT pointed");
                         points += 3;
                 }
             }
