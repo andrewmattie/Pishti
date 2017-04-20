@@ -32,6 +32,7 @@ public class Main extends Application {
     private Deck deck;
     private Label playerScoreLabel;
     private Label botScoreLabel;
+    private Card blankCard;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -65,9 +66,15 @@ public class Main extends Application {
             playerHandHBox.getChildren().get(i).setOnMouseClicked(e -> {
                 deckPane.add(imageView, 1, 0);
                 deck.addCardToPile(card);
-                if (deck.checkForWin() != null) {
-                    System.out.println("win");
+                Player winner = deck.checkForWin();
+                if (winner != null) {
+                    System.out.println("win " + winner.getScore() + " " + winner);
+                    Card newCard = deck.dealCard(null);
+                    deck.addCardToPile(newCard);
+                    deckPane.add(blankCard.getFaceImage(), 1, 0);
+                    deckPane.add(newCard.getFaceImage(), 1, 0);
                 }
+
                 playerScoreLabel.setText("Points: " + player.getScore());
                 botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
                 playerHandHBox.getChildren().remove(imageView);
@@ -83,7 +90,14 @@ public class Main extends Application {
     }
 
     private void playBot() {
-
+//        for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
+//            Card card = botPlayer.getPlayerCardsList().get(i);
+//            ImageView imageView = card.getFaceImage();
+//
+//            deckPane.add(imageView, 1, 0);
+//            Player winner = deck.checkForWin();
+//            System.out.println("BOTwin " + winner.getScore() + " " + winner);
+//        }
     }
 
     private void setupMainView() {
@@ -100,6 +114,7 @@ public class Main extends Application {
         logoVBox = new VBox();
         playerScoreLabel = new Label("Points: 0");
         botScoreLabel = new Label("BotPoints: 0");
+        blankCard = new Card(null, 128);
 
         playerScoreLabel.setTextFill(Color.WHITE);
         botScoreLabel.setTextFill(Color.WHITE);
