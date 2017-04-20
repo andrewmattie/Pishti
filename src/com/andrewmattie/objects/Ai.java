@@ -12,25 +12,25 @@ public class Ai {
         this.arrayList = arrayList;
     }
 
-    public boolean pickCard(Card faceCard) {
+    public int pickCard(Deck deck) {
         for (int i = 0; i < arrayList.size(); i++) {
             Card card = arrayList.get(i);
 
             if (card.checkFace() == Card.Faces.JACK) {
                 //play jack
-                return true;
+                return i;
             }
         }
 
         for (int i = 0; i < arrayList.size(); i++) {
             Card card = arrayList.get(i);
 
-            if (card.checkFace() == faceCard.checkFace()) {
+            if (card.checkFace() == deck.getPileArrayList().get(deck.getPileArrayList().size() - 1).checkFace()) {
                 //play card
-                return true;
+                return i;
             }
         }
 
-        return false;
+        return -1;
     }
 }

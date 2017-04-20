@@ -108,4 +108,8 @@ public class Deck {
     public void addCardToPile(Card card) {
         pileArrayList.add(card);
     }
+
+    public ArrayList<Card> getPileArrayList() {
+        return pileArrayList;
+    }
 }

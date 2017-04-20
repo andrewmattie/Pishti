@@ -1,5 +1,6 @@
 package com.andrewmattie;
 
+import com.andrewmattie.objects.Ai;
 import com.andrewmattie.objects.Card;
 import com.andrewmattie.objects.Deck;
 import com.andrewmattie.objects.Player;
@@ -55,7 +56,11 @@ public class Main extends Application {
 
         assignPlayerCards();
 
+        //todo add in floating cards
         for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
+//            Card card = new Card(null, 127);
+//            ImageView imageView  = new ImageView(card.getFaceImage());
+//            botHandHBox.getChildren().add(imageView);
             botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
         }
     }
@@ -102,11 +107,16 @@ public class Main extends Application {
 
     private void playBot(boolean checkForWin) {
         System.out.println("SL: " + botPlayer.getPlayerCardsList().size());
-
-        //todo setup ai
+        Ai ai = new Ai(botPlayer.getPlayerCardsList());
         Random random = new Random();
         int randomInt = random.nextInt(botPlayer.getPlayerCardsList().size());
-        Card card = botPlayer.getPlayerCardsList().get(randomInt);
+        Card card;
+
+        if (ai.pickCard(deck) != -1) {
+            card = botPlayer.getPlayerCardsList().get(ai.pickCard(deck));
+        } else {
+            card = botPlayer.getPlayerCardsList().get(randomInt);
+        }
         ImageView imageView = card.getFaceImage();
 
         deckPane.add(imageView, 1, 0);
