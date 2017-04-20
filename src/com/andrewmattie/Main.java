@@ -1,6 +1,7 @@
 package com.andrewmattie;
 
 import com.andrewmattie.objects.Card;
+import com.andrewmattie.objects.Deck;
 import com.andrewmattie.objects.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -26,12 +27,62 @@ public class Main extends Application {
     private HBox deckHBox;
     private VBox deckVBox;
     private VBox logoVBox;
+    private Player player;
+    private Player botPlayer;
+    private Deck deck;
+    private Label playerScoreLabel;
+    private Label botScoreLabel;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         setupMainView();
 
+        deck = new Deck();
+        player = new Player(null);
+        botPlayer = new Player(null);
+
+        player.setPlayerCardsList(deck.dealCards(player));
+        botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
+
+        Card faceUpCard = deck.dealCard(null);
+        deck.addCardToPile(faceUpCard);
+        deckPane.add(faceUpCard.getFaceImage(), 1, 0);
+
+        assignPlayerCards();
+
+        for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
+            botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
+        }
+    }
+
+    private void assignPlayerCards() {
+        for (int i = 0; i < player.getPlayerCardsList().size(); i++) {
+            Card card = player.getPlayerCardsList().get(i);
+            ImageView imageView = card.getFaceImage();
+
+            playerHandHBox.getChildren().add(imageView);
+            playerHandHBox.getChildren().get(i).setOnMouseClicked(e -> {
+                deckPane.add(imageView, 1, 0);
+                deck.addCardToPile(card);
+                if (deck.checkForWin() != null) {
+                    System.out.println("win");
+                }
+                playerScoreLabel.setText("Points: " + player.getScore());
+                botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
+                playerHandHBox.getChildren().remove(imageView);
+
+                if (playerHandHBox.getChildren().size() == 0) {
+                    player.setPlayerCardsList(deck.dealCards(player));
+                    assignPlayerCards();
+                }
+
+                playBot();
+            });
+        }
+    }
+
+    private void playBot() {
 
     }
 
@@ -47,33 +98,19 @@ public class Main extends Application {
         deckHBox = new HBox();
         deckVBox = new VBox();
         logoVBox = new VBox();
-        Label playerScoreLabel = new Label("Points: 0");
-        Label botScoreLabel = new Label("BotPoints: 0");
-        Player player = new Player(null);
-        Player botPlayer = new Player(null);
+        playerScoreLabel = new Label("Points: 0");
+        botScoreLabel = new Label("BotPoints: 0");
 
         playerScoreLabel.setTextFill(Color.WHITE);
         botScoreLabel.setTextFill(Color.WHITE);
 
-        Card card = new Card(null, 34);
-        Card card2 = new Card(null, 35);
-        Card card3 = new Card(null, 36);
-        Card card4 = new Card(null, 37);
-        Card card5 = new Card(null, 38);
-        Card card6 = new Card(null, 39);
-        Card card7 = new Card(null, 40);
-        Card card8 = new Card(null, 41);
-
         ImageView deckCard = new ImageView("assets/images/card/b2fv.png");
-        Card faceUpCard = new Card(null, 29);
 
         playerHandHBox.setStyle("-fx-background-color: #3ab503");
         playerHandHBox.alignmentProperty().setValue(Pos.CENTER);
-        playerHandHBox.getChildren().addAll(card.getFaceImage(), card2.getFaceImage(), card3.getFaceImage(), card7.getFaceImage());
 
         botHandHBox.setStyle("-fx-background-color: #3ab503");
         botHandHBox.alignmentProperty().setValue(Pos.CENTER);
-        botHandHBox.getChildren().addAll(card4.getFaceImage(), card5.getFaceImage(), card6.getFaceImage(), card8.getFaceImage());
 
         rightBottomInfoVBox.alignmentProperty().setValue(Pos.BOTTOM_CENTER);
         rightBottomInfoVBox.getChildren().add(playerScoreLabel);
@@ -92,7 +129,6 @@ public class Main extends Application {
 
         deckPane.add(deckCard, 0, 0);
         deckPane.setPadding(new Insets(10, 10, 0, 10));
-        deckPane.add(faceUpCard.getFaceImage(), 1, 0);
 
         deckHBox.alignmentProperty().setValue(Pos.CENTER);
         deckHBox.getChildren().add(deckPane);
@@ -104,7 +140,7 @@ public class Main extends Application {
         Label logoLabel = new Label("Pishti");
         logoLabel.setRotate(-90);
         logoLabel.setStyle("-fx-font-size: 36px");
-        logoLabel.setTextFill(Color.web("#d3d3d3"));
+        logoLabel.setTextFill(Color.web("#84b581"));
         logoVBox.getChildren().add(logoLabel);
         logoVBox.prefWidthProperty().bind(rightContainerVBox.widthProperty());
 
@@ -115,9 +151,6 @@ public class Main extends Application {
         borderPane.setCenter(deckVBox);
         borderPane.setLeft(logoVBox);
         borderPane.autosize();
-
-        playerScoreLabel.setText("Points: " + player.getScore());
-        botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pishti");
