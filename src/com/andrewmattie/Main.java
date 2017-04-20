@@ -36,6 +36,7 @@ public class Main extends Application {
     private Label botScoreLabel;
     private Card blankCard;
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
