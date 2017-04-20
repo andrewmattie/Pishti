@@ -22,6 +22,10 @@ public class Player {
         this.playerCardsList = playerCardsList;
     }
 
+    public void removeCard(int index) {
+        playerCardsList.remove(index);
+    }
+
     public int getScore() {
         return score;
     }

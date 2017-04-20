@@ -13,6 +13,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -62,10 +64,13 @@ public class Main extends Application {
             Card card = player.getPlayerCardsList().get(i);
             ImageView imageView = card.getFaceImage();
 
+            int index = i;
             playerHandHBox.getChildren().add(imageView);
             playerHandHBox.getChildren().get(i).setOnMouseClicked(e -> {
                 deckPane.add(imageView, 1, 0);
                 deck.addCardToPile(card);
+                //todo put back
+//                player.removeCard(index);
                 Player winner = deck.checkForWin();
                 if (winner != null) {
                     System.out.println("win " + winner.getScore() + " " + winner);
@@ -73,31 +78,69 @@ public class Main extends Application {
                     deck.addCardToPile(newCard);
                     deckPane.add(blankCard.getFaceImage(), 1, 0);
                     deckPane.add(newCard.getFaceImage(), 1, 0);
+                    playerScoreLabel.setText("Points: " + player.getScore());
+
+                    playBot(false);
+                } else {
+                    playBot(true);
                 }
 
-                playerScoreLabel.setText("Points: " + player.getScore());
-                botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
                 playerHandHBox.getChildren().remove(imageView);
 
                 if (playerHandHBox.getChildren().size() == 0) {
-                    player.setPlayerCardsList(deck.dealCards(player));
-                    assignPlayerCards();
+                    if (deck.getCardList().size() >= 8) {
+                        player.setPlayerCardsList(deck.dealCards(player));
+                        assignPlayerCards();
+                    } else {
+                        determineWinner();
+                    }
                 }
-
-                playBot();
             });
         }
     }
 
-    private void playBot() {
-//        for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
-//            Card card = botPlayer.getPlayerCardsList().get(i);
-//            ImageView imageView = card.getFaceImage();
-//
-//            deckPane.add(imageView, 1, 0);
-//            Player winner = deck.checkForWin();
-//            System.out.println("BOTwin " + winner.getScore() + " " + winner);
-//        }
+    private void playBot(boolean checkForWin) {
+        System.out.println("SL: " + botPlayer.getPlayerCardsList().size());
+
+        //todo setup ai
+        Random random = new Random();
+        int randomInt = random.nextInt(botPlayer.getPlayerCardsList().size());
+        Card card = botPlayer.getPlayerCardsList().get(randomInt);
+        ImageView imageView = card.getFaceImage();
+
+        deckPane.add(imageView, 1, 0);
+        botHandHBox.getChildren().remove(randomInt);
+        botPlayer.removeCard(randomInt);
+
+        if (botPlayer.getPlayerCardsList().size() == 0) {
+            if (deck.getCardList().size() >= 8) {
+                botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
+                for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
+                    botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
+                }
+            } else {
+                determineWinner();
+            }
+        }
+
+        if (checkForWin) {
+            Player winner = deck.checkForWin();
+            if (winner != null) {
+                System.out.println("BOTwin " + winner.getScore() + " " + winner);
+                botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
+            }
+        }
+    }
+
+    //todo implement ui
+    private void determineWinner() {
+        if (player.getScore() > botPlayer.getScore()) {
+            System.out.println("You win!");
+        } else if (player.getScore() == botPlayer.getScore()) {
+            System.out.println("It's a tie!");
+        } else {
+            System.out.println("You loose :(");
+        }
     }
 
     private void setupMainView() {
