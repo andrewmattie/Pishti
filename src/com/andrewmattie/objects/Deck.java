@@ -48,61 +48,72 @@ public class Deck {
     }
 
     public Player checkForWin() {
-        Player player = null;
-        Card topCard = pileArrayList.get(pileArrayList.size() - 1);
-        Card bottomCard = pileArrayList.get(pileArrayList.size() - 2);
+        System.out.println("CFW: " + pileArrayList.size());
+        if (pileArrayList.size() >= 2) {
+            Player player = null;
+            Card topCard = pileArrayList.get(pileArrayList.size() - 1);
+            Card bottomCard = pileArrayList.get(pileArrayList.size() - 2);
 
-        //todo run logic for pile win check
-        // is win?
-        if (topCard.checkFace() == bottomCard.checkFace()) {
-            if (pileArrayList.size() == 2 && topCard.checkFace() != Card.Faces.JACK) {
-                pileArrayList.clear();
-                player = topCard.getPlayer();
-                player.addScore(10);
-            }
-
-            if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() == Card.Faces.JACK) {
-                pileArrayList.clear();
-                player = topCard.getPlayer();
-                player.addScore(20);
-            }
-
-            int points = 0;
-            for (Card card : pileArrayList) {
-                switch (card.checkFace()) {
-                    case KING:
-                    case QUEEN:
-                    case JACK:
-                    case ACE:
-                        System.out.println("KQJA pointed");
-                        points++;
-                        break;
-                    case TEN:
-                        System.out.println("TEN pointed");
-                        if (card.checkSuit() == Card.Suits.HEARTS) {
-                            points += 3;
-                        } else {
-                            points++;
-                        }
-                        break;
-                    case TWO:
-                        System.out.println("TWO pointed");
-                        if (card.checkSuit() == Card.Suits.SPADES) {
-                            points += 2;
-                        }
-                        break;
-                    default:
-                        System.out.println("DEFAULT pointed");
-                        points += 3;
+            //todo run logic for pile win check
+            // is win?
+            if (topCard.checkFace() == bottomCard.checkFace()) {
+                if (pileArrayList.size() == 2 && topCard.checkFace() != Card.Faces.JACK) {
+                    pileArrayList.clear();
+                    player = topCard.getPlayer();
+                    player.addScore(10);
+                    System.out.println("CARD: " + topCard.getId());
                 }
+
+                if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() == Card.Faces.JACK) {
+                    pileArrayList.clear();
+                    player = topCard.getPlayer();
+                    player.addScore(20);
+                    System.out.println("CARD: " + topCard.getId());
+                }
+
+                int points = 0;
+                for (Card card : pileArrayList) {
+                    switch (card.checkFace()) {
+                        case KING:
+                        case QUEEN:
+                        case JACK:
+                        case ACE:
+                            System.out.println("KQJA pointed");
+                            System.out.println("CARD: " + card.getId());
+                            points++;
+                            break;
+                        case TEN:
+                            System.out.println("TEN pointed");
+                            if (card.checkSuit() == Card.Suits.HEARTS) {
+                                points += 3;
+                            } else {
+                                points++;
+                            }
+                            System.out.println("CARD: " + card.getId());
+                            break;
+                        case TWO:
+                            System.out.println("TWO pointed");
+                            if (card.checkSuit() == Card.Suits.SPADES) {
+                                points += 2;
+                            }
+                            System.out.println("CARD: " + card.getId());
+                            break;
+                        default:
+                            System.out.println("DEFAULT pointed");
+                            System.out.println("CARD: " + card.getId());
+                            points += 3;
+                    }
+                }
+
+                pileArrayList.clear();
+                player = topCard.getPlayer();
+                player.addScore(points);
             }
 
-            pileArrayList.clear();
-            player = topCard.getPlayer();
-            player.addScore(points);
+            return player;
         }
 
-        return player;
+        return null;
     }
 
     public void addCardToPile(Card card) {

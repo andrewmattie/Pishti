@@ -94,7 +94,8 @@ public class Main extends Application {
                 playerHandHBox.getChildren().remove(imageView);
 
                 if (playerHandHBox.getChildren().size() == 0) {
-                    if (deck.getCardList().size() >= 8) {
+                    System.out.println("GCL: " + deck.getCardList().size());
+                    if (deck.getCardList().size() >= 4) {
                         player.setPlayerCardsList(deck.dealCards(player));
                         assignPlayerCards();
                     } else {
@@ -122,9 +123,11 @@ public class Main extends Application {
         deckPane.add(imageView, 1, 0);
         botHandHBox.getChildren().remove(randomInt);
         botPlayer.removeCard(randomInt);
+        deck.addCardToPile(card);
 
         if (botPlayer.getPlayerCardsList().size() == 0) {
-            if (deck.getCardList().size() >= 8) {
+            System.out.println("GCL: " + deck.getCardList().size());
+            if (deck.getCardList().size() >= 4) {
                 botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
                     botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
