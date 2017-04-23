@@ -101,6 +101,8 @@ public class Deck {
                         System.out.println("TWO pointed");
                         if (topCard.checkSuit() == Card.Suits.SPADES) {
                             points = 2;
+                        } else {
+                            points = 3;
                         }
                         System.out.println("CARD: " + topCard.getId());
                         break;

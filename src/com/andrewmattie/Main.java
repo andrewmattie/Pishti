@@ -7,11 +7,14 @@ import com.andrewmattie.objects.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -42,33 +45,14 @@ public class Main extends Application {
     private Label botScoreLabel;
     private Card blankCard;
     private Label logoLabel;
+    private String playerName = "Player";
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         setupMainView();
-
-        deck = new Deck();
-        player = new Player(null);
-        botPlayer = new Player(null);
-
-        player.setPlayerCardsList(deck.dealCards(player));
-        botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
-
-        Card faceUpCard = deck.dealCard(null);
-        deck.addCardToPile(faceUpCard);
-        deckPane.add(faceUpCard.getFaceImage(), 1, 0);
-        System.out.println("CARD: " + deck.getPileArrayList().get(0).getId());
-        assignPlayerCards();
-
-        //todo add in floating cards
-        for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
-//            Card card = new Card(null, 127);
-//            ImageView imageView  = new ImageView(card.getFaceImage());
-//            botHandHBox.getChildren().add(imageView);
-            botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
-        }
+        generateGame();
     }
 
     private void assignPlayerCards() {
@@ -91,7 +75,7 @@ public class Main extends Application {
                     deck.addCardToPile(newCard);
                     deckPane.add(blankCard.getFaceImage(), 1, 0);
                     deckPane.add(newCard.getFaceImage(), 1, 0);
-                    playerScoreLabel.setText("Player: " + player.getScore());
+                    playerScoreLabel.setText(playerName + ": " + player.getScore());
 
                     System.out.println("CFW false");
                 }
@@ -153,14 +137,14 @@ public class Main extends Application {
                     botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
                 }
             } else {
-                determineWinner();
+//                determineWinner();
             }
         }
 
         Player winner = deck.checkForWin();
         if (winner != null) {
             System.out.println("BOTwin " + winner.getScore() + " " + winner);
-            botScoreLabel.setText("Computer: " + botPlayer.getScore());
+            botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
         }
 
         playerScoreLabel.setStyle("-fx-underline: true");
@@ -168,20 +152,47 @@ public class Main extends Application {
     }
 
     //todo implement ui
+    //todo only check once
     private void determineWinner() {
+        Stage dialogStage = new Stage();
+        VBox vBox = new VBox();
+        Scene dialogScene = new Scene(vBox, 200, 100);
+        Label titleLabel = new Label();
+        Label scoreLabel = new Label();
+        Button newGameButton = new Button("New game");
+
+        titleLabel.setStyle("-fx-font-size: 24px");
+
         if (player.getScore() > botPlayer.getScore()) {
             System.out.println("You win!");
-            logoLabel.setText("You win!");
+            titleLabel.setText("You win!");
         } else if (player.getScore() == botPlayer.getScore()) {
             System.out.println("It's a tie!");
-            logoLabel.setText("It's a tie!");
+            titleLabel.setText("It's a tie!");
         } else {
             System.out.println("You loose :(");
-            logoLabel.setText("You loose :(");
+            titleLabel.setText("You loose :(");
         }
+
+        scoreLabel.setText(String.format("Scrappy: %s\n%s: %s", botPlayer.getScore(), playerName, player.getScore()));
+
+        vBox.getChildren().addAll(titleLabel, scoreLabel, newGameButton);
+
         Card blankCard = new Card(null, 128);
         deckPane.add(blankCard.getFaceImage(), 0, 0);
         deckPane.add(blankCard.getFaceImage(), 1, 0);
+
+        newGameButton.setOnMouseClicked(event -> {
+            dialogStage.close();
+            deckPane.getChildren().clear();
+            generateGame();
+        });
+
+        dialogStage.setResizable(false);
+        dialogStage.setOnCloseRequest(Event::consume);
+        dialogStage.setTitle("Thanks for playing!");
+        dialogStage.setScene(dialogScene);
+        dialogStage.show();
     }
 
     //todo look into glitch
@@ -190,6 +201,60 @@ public class Main extends Application {
         for (Node node : observableList) {
             node.setDisable(disabled);
         }
+    }
+
+    private void setupNameDialog() {
+        Stage dialogStage = new Stage();
+        VBox vBox = new VBox();
+        Scene dialogScene = new Scene(vBox, 250, 60);
+
+        TextField textField = new TextField();
+        Button setNameButton = new Button("Play");
+
+        textField.prefWidthProperty().bind(dialogStage.widthProperty());
+        setNameButton.prefWidthProperty().bind(textField.widthProperty());
+        dialogStage.setResizable(false);
+        dialogStage.setOnCloseRequest(Event::consume);
+
+        setNameButton.setOnMouseClicked(click -> {
+            playerName = textField.getText();
+            playerScoreLabel.setText(playerName + ": " + player.getScore());
+            dialogStage.close();
+        });
+
+        vBox.getChildren().addAll(textField, setNameButton);
+
+        dialogStage.setTitle("Please enter your name...");
+        dialogStage.setScene(dialogScene);
+        dialogStage.show();
+    }
+
+    private void generateGame() {
+        deck = new Deck();
+        player = new Player(null);
+        botPlayer = new Player(null);
+
+        player.setPlayerCardsList(deck.dealCards(player));
+        botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
+
+        Card faceUpCard = deck.dealCard(null);
+        Card upsideDownCard = new Card(null, 127);
+        deck.addCardToPile(faceUpCard);
+        deckPane.add(upsideDownCard.getFaceImage(), 0, 0);
+        deckPane.add(faceUpCard.getFaceImage(), 1, 0);
+        System.out.println("CARD: " + deck.getPileArrayList().get(0).getId());
+        assignPlayerCards();
+
+        //todo add in floating cards
+        for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
+//            Card card = new Card(null, 127);
+//            ImageView imageView  = new ImageView(card.getFaceImage());
+//            botHandHBox.getChildren().add(imageView);
+            botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
+        }
+
+        playerScoreLabel.setText(playerName + ": " + botPlayer.getScore());
+        botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
     }
 
     private void setupMainView() {
@@ -204,8 +269,8 @@ public class Main extends Application {
         deckHBox = new HBox();
         deckVBox = new VBox();
         logoVBox = new VBox();
-        playerScoreLabel = new Label("Player: 0");
-        botScoreLabel = new Label("Computer: 0");
+        playerScoreLabel = new Label(playerName + ": 0");
+        botScoreLabel = new Label("Scrappy: 0");
         blankCard = new Card(null, 128);
 
         playerScoreLabel.setTextFill(Color.WHITE);
@@ -251,7 +316,7 @@ public class Main extends Application {
         logoVBox.alignmentProperty().setValue(Pos.CENTER);
         logoLabel = new Label("Pishti");
         logoLabel.setRotate(-90);
-        logoLabel.setStyle("-fx-font-size: 36px");
+        logoLabel.setStyle("-fx-font-size: 28px");
         logoLabel.setTextFill(Color.web("#84b581"));
         logoVBox.getChildren().add(logoLabel);
         logoVBox.prefWidthProperty().bind(rightContainerVBox.widthProperty());
@@ -270,6 +335,8 @@ public class Main extends Application {
         primaryStage.setMinHeight(500);
         primaryStage.setMinWidth(700);
         primaryStage.show();
+
+        setupNameDialog();
     }
 
     public static void main(String[] args) {
