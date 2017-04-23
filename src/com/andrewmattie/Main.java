@@ -143,8 +143,6 @@ public class Main extends Application {
         ImageView imageView = card.getFaceImage();
 
         deckPane.add(imageView, 1, 0);
-//        botHandHBox.getChildren().remove(randomInt);
-//        botPlayer.removeCard(randomInt);
         deck.addCardToPile(card);
 
         if (botPlayer.getPlayerCardsList().size() == 0) {
@@ -181,6 +179,9 @@ public class Main extends Application {
             System.out.println("You loose :(");
             logoLabel.setText("You loose :(");
         }
+        Card blankCard = new Card(null, 128);
+        deckPane.add(blankCard.getFaceImage(), 0, 0);
+        deckPane.add(blankCard.getFaceImage(), 1, 0);
     }
 
     //todo look into glitch
@@ -215,9 +216,11 @@ public class Main extends Application {
 
         playerHandHBox.setStyle("-fx-background-color: #3ab503");
         playerHandHBox.alignmentProperty().setValue(Pos.CENTER);
+        playerHandHBox.setSpacing(5);
 
         botHandHBox.setStyle("-fx-background-color: #3ab503");
         botHandHBox.alignmentProperty().setValue(Pos.CENTER);
+        botHandHBox.setSpacing(5);
 
         rightBottomInfoVBox.alignmentProperty().setValue(Pos.BOTTOM_CENTER);
         rightBottomInfoVBox.getChildren().add(playerScoreLabel);
@@ -229,6 +232,7 @@ public class Main extends Application {
         rightContainerVBox.setPadding(new Insets(10, 10, 0, 10));
         rightContainerVBox.alignmentProperty().setValue(Pos.CENTER);
         rightContainerVBox.getChildren().addAll(rightTopInfoVBox, rightBottomInfoVBox);
+        rightContainerVBox.setSpacing(50);
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setPercentWidth(50);
@@ -236,6 +240,7 @@ public class Main extends Application {
 
         deckPane.add(deckCard, 0, 0);
         deckPane.setPadding(new Insets(10, 10, 0, 10));
+        deckPane.setHgap(20);
 
         deckHBox.alignmentProperty().setValue(Pos.CENTER);
         deckHBox.getChildren().add(deckPane);
