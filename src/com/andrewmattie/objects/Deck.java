@@ -55,8 +55,17 @@ public class Deck {
             Card topCard = pileArrayList.get(pileArrayList.size() - 1);
             Card bottomCard = pileArrayList.get(pileArrayList.size() - 2);
 
+
+            if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() != Card.Faces.JACK) {
+                System.out.println("win: 0");
+                pileArrayList.clear();
+                player = topCard.getPlayer();
+                points = 1;
+                System.out.println("CARD: " + topCard.getId());
+            }
+
             //double
-            if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() == Card.Faces.JACK
+            else if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() == Card.Faces.JACK
                     && pileArrayList.size() == 2) {
                 System.out.println("win: 1");
                 pileArrayList.clear();

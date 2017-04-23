@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -69,26 +70,19 @@ public class Main extends Application {
                 //todo put back
 //                player.removeCard(index);
                 Player winner = deck.checkForWin();
-                if (winner != null) {
-                    System.out.println("win " + winner.getScore() + " " + winner);
-                    Card newCard = deck.dealCard(null);
-                    deck.addCardToPile(newCard);
-                    deckPane.add(blankCard.getFaceImage(), 1, 0);
-                    deckPane.add(newCard.getFaceImage(), 1, 0);
-                    playerScoreLabel.setText(playerName + ": " + player.getScore());
-
-                    System.out.println("CFW false");
-                }
+                checkScore(winner);
+                playerScoreLabel.setText(playerName + ": " + player.getScore());
 
                 playerHandHBox.getChildren().remove(imageView);
 
                 if (playerHandHBox.getChildren().size() == 0) {
                     System.out.println("GCL: " + deck.getCardList().size());
-                    if (deck.getCardList().size() >= 4) {
+                    if (deck.getCardList().size() >= 8) {
                         player.setPlayerCardsList(deck.dealCards(player));
                         assignPlayerCards();
                     } else {
-                        determineWinner();
+                        //todo look at
+//                        determineWinner();
                     }
                 }
 
@@ -104,6 +98,24 @@ public class Main extends Application {
                     }
                 }, 1000);
             });
+        }
+    }
+
+    private void assignScore(Player winner) {
+        System.out.println("win " + winner.getScore() + " " + winner);
+        Card newCard = deck.dealCard(null);
+        deck.addCardToPile(newCard);
+        deckPane.add(blankCard.getFaceImage(), 1, 0);
+        deckPane.add(newCard.getFaceImage(), 1, 0);
+    }
+
+    private void checkScore(Player winner) {
+        if (winner != null) {
+            if (winner == player) {
+                assignScore(player);
+            } else if (winner == botPlayer) {
+                assignScore(botPlayer);
+            }
         }
     }
 
@@ -131,21 +143,21 @@ public class Main extends Application {
 
         if (botPlayer.getPlayerCardsList().size() == 0) {
             System.out.println("GCL: " + deck.getCardList().size());
-            if (deck.getCardList().size() >= 4) {
+            if (deck.getCardList().size() >= 8) {
                 botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
-                    botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
+                    Card blankCard = new Card(null, 127);
+                    botHandHBox.getChildren().add(blankCard.getFaceImage());
+//                    botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
                 }
             } else {
-//                determineWinner();
+                determineWinner();
             }
         }
 
         Player winner = deck.checkForWin();
-        if (winner != null) {
-            System.out.println("BOTwin " + winner.getScore() + " " + winner);
-            botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
-        }
+        checkScore(winner);
+        botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
 
         playerScoreLabel.setStyle("-fx-underline: true");
         botScoreLabel.setStyle("-fx-underline: false");
@@ -156,10 +168,14 @@ public class Main extends Application {
     private void determineWinner() {
         Stage dialogStage = new Stage();
         VBox vBox = new VBox();
-        Scene dialogScene = new Scene(vBox, 200, 100);
+        Scene dialogScene = new Scene(vBox, 200, 75);
         Label titleLabel = new Label();
         Label scoreLabel = new Label();
         Button newGameButton = new Button("New game");
+
+        titleLabel.prefWidthProperty().bind(dialogStage.widthProperty());
+        scoreLabel.prefWidthProperty().bind(dialogStage.widthProperty());
+        newGameButton.prefWidthProperty().bind(dialogStage.widthProperty());
 
         titleLabel.setStyle("-fx-font-size: 24px");
 
@@ -219,6 +235,14 @@ public class Main extends Application {
             playerName = textField.getText();
             playerScoreLabel.setText(playerName + ": " + player.getScore());
             dialogStage.close();
+        });
+
+        textField.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                playerName = textField.getText();
+                playerScoreLabel.setText(playerName + ": " + player.getScore());
+                dialogStage.close();
+            }
         });
 
         vBox.getChildren().addAll(textField, setNameButton);
