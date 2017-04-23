@@ -1,3 +1,6 @@
+// Class: CS 1302/03
+// Teammates: Andrew, Gianni, Jason, Shadaman
+
 package com.andrewmattie;
 
 import com.andrewmattie.objects.Ai;
