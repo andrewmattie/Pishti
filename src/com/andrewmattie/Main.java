@@ -53,7 +53,7 @@ public class Main extends Application {
         Card faceUpCard = deck.dealCard(null);
         deck.addCardToPile(faceUpCard);
         deckPane.add(faceUpCard.getFaceImage(), 1, 0);
-
+        System.out.println("CARD: " + deck.getPileArrayList().get(0).getId());
         assignPlayerCards();
 
         //todo add in floating cards
@@ -95,7 +95,7 @@ public class Main extends Application {
 
                 if (playerHandHBox.getChildren().size() == 0) {
                     System.out.println("GCL: " + deck.getCardList().size());
-                    if (deck.getCardList().size() >= 4) {
+                    if (deck.getCardList().size() >= 8) {
                         player.setPlayerCardsList(deck.dealCards(player));
                         assignPlayerCards();
                     } else {
@@ -114,20 +114,25 @@ public class Main extends Application {
         Card card;
 
         if (ai.pickCard(deck) != -1) {
-            card = botPlayer.getPlayerCardsList().get(ai.pickCard(deck));
+            int id = ai.pickCard(deck);
+            card = botPlayer.getPlayerCardsList().get(id);
+            botHandHBox.getChildren().remove(id);
+            botPlayer.removeCard(id);
         } else {
             card = botPlayer.getPlayerCardsList().get(randomInt);
+            botHandHBox.getChildren().remove(randomInt);
+            botPlayer.removeCard(randomInt);
         }
         ImageView imageView = card.getFaceImage();
 
         deckPane.add(imageView, 1, 0);
-        botHandHBox.getChildren().remove(randomInt);
-        botPlayer.removeCard(randomInt);
+//        botHandHBox.getChildren().remove(randomInt);
+//        botPlayer.removeCard(randomInt);
         deck.addCardToPile(card);
 
         if (botPlayer.getPlayerCardsList().size() == 0) {
             System.out.println("GCL: " + deck.getCardList().size());
-            if (deck.getCardList().size() >= 4) {
+            if (deck.getCardList().size() >= 8) {
                 botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
                     botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
