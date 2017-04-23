@@ -34,7 +34,4 @@ public class Player {
         this.score += score;
     }
 
-    public void subtractScore(int score) {
-        this.score -= score;
-    }
 }

@@ -69,7 +69,6 @@ public class Main extends Application {
 
                 Player winner = deck.checkForWin();
                 checkScore(winner);
-                playerScoreLabel.setText(playerName + ": " + player.getScore());
 
                 playerHandHBox.getChildren().remove(imageView);
 
@@ -95,20 +94,18 @@ public class Main extends Application {
         }
     }
 
-    private void assignScore(Player winner) {
-        Card newCard = deck.dealCard(null);
-        deck.addCardToPile(newCard);
-        deckPane.add(blankCard.getFaceImage(), 1, 0);
-        deckPane.add(newCard.getFaceImage(), 1, 0);
-    }
-
     private void checkScore(Player winner) {
         if (winner != null) {
             if (winner == player) {
-                assignScore(player);
+                playerScoreLabel.setText(playerName + ": " + player.getScore());
             } else if (winner == botPlayer) {
-                assignScore(botPlayer);
+                botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
             }
+
+            Card newCard = deck.dealCard(null);
+            deck.addCardToPile(newCard);
+            deckPane.add(blankCard.getFaceImage(), 1, 0);
+            deckPane.add(newCard.getFaceImage(), 1, 0);
         }
     }
 
@@ -148,7 +145,6 @@ public class Main extends Application {
 
         Player winner = deck.checkForWin();
         checkScore(winner);
-        botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
 
         playerScoreLabel.setStyle("-fx-underline: true");
         botScoreLabel.setStyle("-fx-underline: false");
@@ -157,7 +153,7 @@ public class Main extends Application {
     private void determineWinner() {
         Stage dialogStage = new Stage();
         VBox vBox = new VBox();
-        Scene dialogScene = new Scene(vBox, 200, 75);
+        Scene dialogScene = new Scene(vBox, 200, 100);
         Label titleLabel = new Label();
         Label scoreLabel = new Label();
         Button newGameButton = new Button("New game");
