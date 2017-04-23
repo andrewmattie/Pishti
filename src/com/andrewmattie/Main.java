@@ -195,7 +195,6 @@ public class Main extends Application {
         dialogStage.show();
     }
 
-    //todo look into glitch
     private void changePlayerHandState(boolean disabled) {
         ObservableList<Node> observableList = playerHandHBox.getChildren();
         for (Node node : observableList) {
@@ -247,10 +246,9 @@ public class Main extends Application {
 
         //todo add in floating cards
         for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
-//            Card card = new Card(null, 127);
-//            ImageView imageView  = new ImageView(card.getFaceImage());
-//            botHandHBox.getChildren().add(imageView);
-            botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
+            Card card = new Card(null, 127);
+            botHandHBox.getChildren().add(card.getFaceImage());
+//            botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
         }
 
         playerScoreLabel.setText(playerName + ": " + botPlayer.getScore());
