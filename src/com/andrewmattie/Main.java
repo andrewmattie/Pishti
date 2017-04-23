@@ -6,8 +6,10 @@ import com.andrewmattie.objects.Deck;
 import com.andrewmattie.objects.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -39,6 +41,7 @@ public class Main extends Application {
     private Label playerScoreLabel;
     private Label botScoreLabel;
     private Card blankCard;
+    private Label logoLabel;
 
 
     @Override
@@ -76,6 +79,7 @@ public class Main extends Application {
             int index = i;
             playerHandHBox.getChildren().add(imageView);
             playerHandHBox.getChildren().get(i).setOnMouseClicked(e -> {
+                changePlayerHandState(true);
                 deckPane.add(imageView, 1, 0);
                 deck.addCardToPile(card);
                 //todo put back
@@ -87,7 +91,7 @@ public class Main extends Application {
                     deck.addCardToPile(newCard);
                     deckPane.add(blankCard.getFaceImage(), 1, 0);
                     deckPane.add(newCard.getFaceImage(), 1, 0);
-                    playerScoreLabel.setText("Points: " + player.getScore());
+                    playerScoreLabel.setText("Player: " + player.getScore());
 
                     System.out.println("CFW false");
                 }
@@ -96,7 +100,7 @@ public class Main extends Application {
 
                 if (playerHandHBox.getChildren().size() == 0) {
                     System.out.println("GCL: " + deck.getCardList().size());
-                    if (deck.getCardList().size() >= 8) {
+                    if (deck.getCardList().size() >= 4) {
                         player.setPlayerCardsList(deck.dealCards(player));
                         assignPlayerCards();
                     } else {
@@ -104,11 +108,14 @@ public class Main extends Application {
                     }
                 }
 
+                playerScoreLabel.setStyle("-fx-underline: false");
+                botScoreLabel.setStyle("-fx-underline: true");
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
                         Platform.runLater(() -> {
                             playBot();
+                            changePlayerHandState(false);
                         });
                     }
                 }, 1000);
@@ -142,7 +149,7 @@ public class Main extends Application {
 
         if (botPlayer.getPlayerCardsList().size() == 0) {
             System.out.println("GCL: " + deck.getCardList().size());
-            if (deck.getCardList().size() >= 8) {
+            if (deck.getCardList().size() >= 4) {
                 botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
                     botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
@@ -152,21 +159,35 @@ public class Main extends Application {
             }
         }
 
-            Player winner = deck.checkForWin();
-            if (winner != null) {
-                System.out.println("BOTwin " + winner.getScore() + " " + winner);
-                botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
-            }
+        Player winner = deck.checkForWin();
+        if (winner != null) {
+            System.out.println("BOTwin " + winner.getScore() + " " + winner);
+            botScoreLabel.setText("Computer: " + botPlayer.getScore());
+        }
+
+        playerScoreLabel.setStyle("-fx-underline: true");
+        botScoreLabel.setStyle("-fx-underline: false");
     }
 
     //todo implement ui
     private void determineWinner() {
         if (player.getScore() > botPlayer.getScore()) {
             System.out.println("You win!");
+            logoLabel.setText("You win!");
         } else if (player.getScore() == botPlayer.getScore()) {
             System.out.println("It's a tie!");
+            logoLabel.setText("It's a tie!");
         } else {
             System.out.println("You loose :(");
+            logoLabel.setText("You loose :(");
+        }
+    }
+
+    //todo look into glitch
+    private void changePlayerHandState(boolean disabled) {
+        ObservableList<Node> observableList = playerHandHBox.getChildren();
+        for (Node node : observableList) {
+            node.setDisable(disabled);
         }
     }
 
@@ -182,11 +203,12 @@ public class Main extends Application {
         deckHBox = new HBox();
         deckVBox = new VBox();
         logoVBox = new VBox();
-        playerScoreLabel = new Label("Points: 0");
-        botScoreLabel = new Label("BotPoints: 0");
+        playerScoreLabel = new Label("Player: 0");
+        botScoreLabel = new Label("Computer: 0");
         blankCard = new Card(null, 128);
 
         playerScoreLabel.setTextFill(Color.WHITE);
+        playerScoreLabel.setStyle("-fx-underline: true");
         botScoreLabel.setTextFill(Color.WHITE);
 
         ImageView deckCard = new ImageView("assets/images/card/b2fv.png");
@@ -222,12 +244,13 @@ public class Main extends Application {
         deckVBox.getChildren().add(deckHBox);
 
         logoVBox.alignmentProperty().setValue(Pos.CENTER);
-        Label logoLabel = new Label("Pishti");
+        logoLabel = new Label("Pishti");
         logoLabel.setRotate(-90);
         logoLabel.setStyle("-fx-font-size: 36px");
         logoLabel.setTextFill(Color.web("#84b581"));
         logoVBox.getChildren().add(logoLabel);
         logoVBox.prefWidthProperty().bind(rightContainerVBox.widthProperty());
+        logoVBox.prefHeightProperty().bind(rightContainerVBox.heightProperty());
 
         borderPane.setStyle("-fx-background-color: #0a6c03");
         borderPane.setBottom(playerHandHBox);
