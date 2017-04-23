@@ -102,10 +102,17 @@ public class Main extends Application {
                 botScoreLabel.setText("Scrappy: " + botPlayer.getScore());
             }
 
-            Card newCard = deck.dealCard(null);
-            deck.addCardToPile(newCard);
-            deckPane.add(blankCard.getFaceImage(), 1, 0);
-            deckPane.add(newCard.getFaceImage(), 1, 0);
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        Card newCard = deck.dealCard(null);
+                        deck.addCardToPile(newCard);
+                        deckPane.add(blankCard.getFaceImage(), 1, 0);
+                        deckPane.add(newCard.getFaceImage(), 1, 0);
+                    });
+                }
+            }, 500);
         }
     }
 
@@ -136,7 +143,6 @@ public class Main extends Application {
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
                     Card blankCard = new Card(null, 127);
                     botHandHBox.getChildren().add(blankCard.getFaceImage());
-//                    botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
                 }
             } else {
                 determineWinner();
@@ -153,14 +159,16 @@ public class Main extends Application {
     private void determineWinner() {
         Stage dialogStage = new Stage();
         VBox vBox = new VBox();
-        Scene dialogScene = new Scene(vBox, 200, 100);
+        Scene dialogScene = new Scene(vBox, 200, 125);
         Label titleLabel = new Label();
         Label scoreLabel = new Label();
         Button newGameButton = new Button("New game");
+        Button exitGameButton = new Button("Exit");
 
         titleLabel.prefWidthProperty().bind(dialogStage.widthProperty());
         scoreLabel.prefWidthProperty().bind(dialogStage.widthProperty());
         newGameButton.prefWidthProperty().bind(dialogStage.widthProperty());
+        exitGameButton.prefWidthProperty().bind(dialogStage.widthProperty());
 
         titleLabel.setStyle("-fx-font-size: 24px");
 
@@ -174,7 +182,7 @@ public class Main extends Application {
 
         scoreLabel.setText(String.format("Scrappy: %s\n%s: %s", botPlayer.getScore(), playerName, player.getScore()));
 
-        vBox.getChildren().addAll(titleLabel, scoreLabel, newGameButton);
+        vBox.getChildren().addAll(titleLabel, scoreLabel, newGameButton, exitGameButton);
 
         Card blankCard = new Card(null, 128);
         deckPane.add(blankCard.getFaceImage(), 0, 0);
@@ -184,6 +192,11 @@ public class Main extends Application {
             dialogStage.close();
             deckPane.getChildren().clear();
             generateGame();
+        });
+
+        exitGameButton.setOnMouseClicked(event -> {
+            dialogStage.close();
+            primaryStage.close();
         });
 
         dialogStage.setResizable(false);
