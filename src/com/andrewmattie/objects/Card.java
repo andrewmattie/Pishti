@@ -28,6 +28,13 @@ public class Card {
         QUEEN,
         KING,
         ACE,
+        THREE,
+        FOUR,
+        FIVE,
+        SIX,
+        SEVEN,
+        EIGHT,
+        NINE,
         OTHER
     }
 
@@ -50,16 +57,6 @@ public class Card {
             case 50:
             case 37:
                 return Faces.JACK;
-            case 2:
-            case 15:
-            case 28:
-            case 41:
-                return Faces.TWO;
-            case 10:
-            case 23:
-            case 49:
-            case 36:
-                return Faces.TEN;
             case 12:
             case 38:
             case 51:
@@ -75,7 +72,53 @@ public class Card {
             case 27:
             case 40:
                 return Faces.ACE;
+            case 2:
+            case 15:
+            case 28:
+            case 41:
+                return Faces.TWO;
+            case 3:
+            case 16:
+            case 29:
+            case 42:
+                return Faces.THREE;
+            case 4:
+            case 17:
+            case 30:
+            case 43:
+                return Faces.FOUR;
+            case 5:
+            case 18:
+            case 31:
+            case 44:
+                return Faces.FIVE;
+            case 6:
+            case 19:
+            case 32:
+            case 45:
+                return Faces.SIX;
+            case 7:
+            case 20:
+            case 33:
+            case 46:
+                return Faces.SEVEN;
+            case 8:
+            case 21:
+            case 34:
+            case 47:
+                return Faces.EIGHT;
+            case 9:
+            case 22:
+            case 35:
+            case 48:
+                return Faces.NINE;
+            case 10:
+            case 23:
+            case 49:
+            case 36:
+                return Faces.TEN;
             default:
+                System.out.println("OTHER: " + id);
                 return Faces.OTHER;
         }
     }

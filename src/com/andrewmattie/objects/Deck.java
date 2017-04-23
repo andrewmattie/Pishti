@@ -104,10 +104,22 @@ public class Deck {
                         }
                         System.out.println("CARD: " + topCard.getId());
                         break;
-                    default:
-                        System.out.println("DEFAULT pointed");
+                    case THREE:
+                    case FOUR:
+                    case FIVE:
+                    case SIX:
+                    case SEVEN:
+                    case EIGHT:
+                    case NINE:
+                        System.out.println("GENERAL pointed");
                         System.out.println("CARD: " + topCard.getId());
                         points = 3;
+                        break;
+                    default:
+//                        System.out.println("DEFAULT pointed");
+//                        System.out.println("CARD: " + topCard.getId());
+//                        points = 3;
+                        points = 0;
                 }
             }
 

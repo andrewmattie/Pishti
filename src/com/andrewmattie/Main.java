@@ -5,6 +5,7 @@ import com.andrewmattie.objects.Card;
 import com.andrewmattie.objects.Deck;
 import com.andrewmattie.objects.Player;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Main extends Application {
@@ -86,9 +89,7 @@ public class Main extends Application {
                     deckPane.add(newCard.getFaceImage(), 1, 0);
                     playerScoreLabel.setText("Points: " + player.getScore());
 
-                    playBot(false);
-                } else {
-                    playBot(true);
+                    System.out.println("CFW false");
                 }
 
                 playerHandHBox.getChildren().remove(imageView);
@@ -102,11 +103,20 @@ public class Main extends Application {
                         determineWinner();
                     }
                 }
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(() -> {
+                            playBot();
+                        });
+                    }
+                }, 1000);
             });
         }
     }
 
-    private void playBot(boolean checkForWin) {
+    private void playBot() {
         System.out.println("SL: " + botPlayer.getPlayerCardsList().size());
         Ai ai = new Ai(botPlayer.getPlayerCardsList());
         Random random = new Random();
@@ -142,13 +152,11 @@ public class Main extends Application {
             }
         }
 
-        if (checkForWin) {
             Player winner = deck.checkForWin();
             if (winner != null) {
                 System.out.println("BOTwin " + winner.getScore() + " " + winner);
                 botScoreLabel.setText("BotPoints: " + botPlayer.getScore());
             }
-        }
     }
 
     //todo implement ui
