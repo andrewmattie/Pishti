@@ -76,13 +76,9 @@ public class Main extends Application {
                 playerHandHBox.getChildren().remove(imageView);
 
                 if (playerHandHBox.getChildren().size() == 0) {
-                    System.out.println("GCL: " + deck.getCardList().size());
                     if (deck.getCardList().size() >= 8) {
                         player.setPlayerCardsList(deck.dealCards(player));
                         assignPlayerCards();
-                    } else {
-                        //todo look at
-//                        determineWinner();
                     }
                 }
 
@@ -102,7 +98,6 @@ public class Main extends Application {
     }
 
     private void assignScore(Player winner) {
-        System.out.println("win " + winner.getScore() + " " + winner);
         Card newCard = deck.dealCard(null);
         deck.addCardToPile(newCard);
         deckPane.add(blankCard.getFaceImage(), 1, 0);
@@ -120,7 +115,6 @@ public class Main extends Application {
     }
 
     private void playBot() {
-        System.out.println("SL: " + botPlayer.getPlayerCardsList().size());
         Ai ai = new Ai(botPlayer.getPlayerCardsList());
         Random random = new Random();
         int randomInt = random.nextInt(botPlayer.getPlayerCardsList().size());
@@ -142,7 +136,6 @@ public class Main extends Application {
         deck.addCardToPile(card);
 
         if (botPlayer.getPlayerCardsList().size() == 0) {
-            System.out.println("GCL: " + deck.getCardList().size());
             if (deck.getCardList().size() >= 8) {
                 botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
@@ -163,8 +156,6 @@ public class Main extends Application {
         botScoreLabel.setStyle("-fx-underline: false");
     }
 
-    //todo implement ui
-    //todo only check once
     private void determineWinner() {
         Stage dialogStage = new Stage();
         VBox vBox = new VBox();
@@ -180,13 +171,10 @@ public class Main extends Application {
         titleLabel.setStyle("-fx-font-size: 24px");
 
         if (player.getScore() > botPlayer.getScore()) {
-            System.out.println("You win!");
             titleLabel.setText("You win!");
         } else if (player.getScore() == botPlayer.getScore()) {
-            System.out.println("It's a tie!");
             titleLabel.setText("It's a tie!");
         } else {
-            System.out.println("You loose :(");
             titleLabel.setText("You loose :(");
         }
 
@@ -265,7 +253,6 @@ public class Main extends Application {
         deck.addCardToPile(faceUpCard);
         deckPane.add(upsideDownCard.getFaceImage(), 0, 0);
         deckPane.add(faceUpCard.getFaceImage(), 1, 0);
-        System.out.println("CARD: " + deck.getPileArrayList().get(0).getId());
         assignPlayerCards();
 
         //todo add in floating cards

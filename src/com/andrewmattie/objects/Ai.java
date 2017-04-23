@@ -24,7 +24,6 @@ public class Ai {
 
         for (int i = 0; i < arrayList.size(); i++) {
             Card card = arrayList.get(i);
-
             if (card.checkFace() == deck.getPileArrayList().get(deck.getPileArrayList().size() - 1).checkFace()) {
                 //play card
                 return i;

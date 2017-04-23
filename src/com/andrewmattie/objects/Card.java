@@ -118,7 +118,6 @@ public class Card {
             case 36:
                 return Faces.TEN;
             default:
-                System.out.println("OTHER: " + id);
                 return Faces.OTHER;
         }
     }
