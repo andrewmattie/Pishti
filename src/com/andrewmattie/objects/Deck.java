@@ -56,6 +56,7 @@ public class Deck {
             Card bottomCard = pileArrayList.get(pileArrayList.size() - 2);
 
 
+            //jack
             if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() != Card.Faces.JACK) {
                 pileArrayList.clear();
                 player = topCard.getPlayer();

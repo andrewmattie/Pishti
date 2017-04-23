@@ -52,21 +52,6 @@ public class Card {
 
     public Faces checkFace() {
         switch (id) {
-            case 11:
-            case 24:
-            case 50:
-            case 37:
-                return Faces.JACK;
-            case 12:
-            case 38:
-            case 51:
-            case 25:
-                return Faces.QUEEN;
-            case 13:
-            case 26:
-            case 39:
-            case 52:
-                return Faces.KING;
             case 1:
             case 14:
             case 27:
@@ -117,6 +102,21 @@ public class Card {
             case 49:
             case 36:
                 return Faces.TEN;
+            case 11:
+            case 24:
+            case 50:
+            case 37:
+                return Faces.JACK;
+            case 12:
+            case 38:
+            case 51:
+            case 25:
+                return Faces.QUEEN;
+            case 13:
+            case 26:
+            case 39:
+            case 52:
+                return Faces.KING;
             default:
                 return Faces.OTHER;
         }

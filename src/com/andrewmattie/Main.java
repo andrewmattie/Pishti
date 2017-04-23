@@ -61,14 +61,12 @@ public class Main extends Application {
             Card card = player.getPlayerCardsList().get(i);
             ImageView imageView = card.getFaceImage();
 
-            int index = i;
             playerHandHBox.getChildren().add(imageView);
             playerHandHBox.getChildren().get(i).setOnMouseClicked(e -> {
                 changePlayerHandState(true);
                 deckPane.add(imageView, 1, 0);
                 deck.addCardToPile(card);
-                //todo put back
-//                player.removeCard(index);
+
                 Player winner = deck.checkForWin();
                 checkScore(winner);
                 playerScoreLabel.setText(playerName + ": " + player.getScore());
@@ -255,11 +253,9 @@ public class Main extends Application {
         deckPane.add(faceUpCard.getFaceImage(), 1, 0);
         assignPlayerCards();
 
-        //todo add in floating cards
         for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
             Card card = new Card(null, 127);
             botHandHBox.getChildren().add(card.getFaceImage());
-//            botHandHBox.getChildren().add(botPlayer.getPlayerCardsList().get(i).getFaceImage());
         }
 
         playerScoreLabel.setText(playerName + ": " + botPlayer.getScore());
