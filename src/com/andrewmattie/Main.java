@@ -74,16 +74,9 @@ public class Main extends Application {
                 checkScore(winner);
 
                 playerHandHBox.getChildren().remove(imageView);
-
-                if (playerHandHBox.getChildren().size() == 0) {
-                    if (deck.getCardList().size() >= 8) {
-                        player.setPlayerCardsList(deck.dealCards(player));
-                        assignPlayerCards();
-                    }
-                }
-
                 playerScoreLabel.setStyle("-fx-underline: false");
                 botScoreLabel.setStyle("-fx-underline: true");
+                
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -143,6 +136,9 @@ public class Main extends Application {
         if (botPlayer.getPlayerCardsList().size() == 0) {
             if (deck.getCardList().size() >= 8) {
                 botPlayer.setPlayerCardsList(deck.dealCards(botPlayer));
+                player.setPlayerCardsList(deck.dealCards(player));
+                assignPlayerCards();
+
                 for (int i = 0; i < botPlayer.getPlayerCardsList().size(); i++) {
                     Card blankCard = new Card(null, 127);
                     botHandHBox.getChildren().add(blankCard.getFaceImage());

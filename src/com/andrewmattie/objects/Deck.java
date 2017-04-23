@@ -71,7 +71,7 @@ public class Deck {
                     && pileArrayList.size() == 2) {
                 pileArrayList.clear();
                 player = topCard.getPlayer();
-                points = 10;
+                points = 20;
             }
 
             //single
