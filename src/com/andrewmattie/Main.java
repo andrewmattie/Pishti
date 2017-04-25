@@ -76,7 +76,7 @@ public class Main extends Application {
                 playerHandHBox.getChildren().remove(imageView);
                 playerScoreLabel.setStyle("-fx-underline: false");
                 botScoreLabel.setStyle("-fx-underline: true");
-                
+
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {

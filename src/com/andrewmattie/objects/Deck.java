@@ -63,7 +63,7 @@ public class Deck {
             if (topCard.checkFace() == Card.Faces.JACK && bottomCard.checkFace() != Card.Faces.JACK) {
                 pileArrayList.clear();
                 player = topCard.getPlayer();
-                points = 1;
+                points = 10;
             }
 
             //double
